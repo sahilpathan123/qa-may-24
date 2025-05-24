@@ -1,0 +1,79 @@
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Scanner;
+abstract class Expense {
+    protected String name;
+    protected int amount;
+
+    public Expense(String name, int amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+
+    public abstract boolean isMeal();
+
+    public int getAmount() {
+        return amount;
+    }
+}
+
+// Meal expense class
+class MealExpense extends Expense {
+    public MealExpense(String name, int amount) {
+        super(name, amount);
+    }
+
+    @Override
+    public boolean isMeal() {
+        return true;
+    }
+}
+
+// Non-meal expense class
+class OtherExpense extends Expense {
+    public OtherExpense(String name, int amount) {
+        super(name, amount);
+    }
+
+    @Override
+    public boolean isMeal() {
+        return false;
+    }
+}
+
+// Expense tracker class
+public class ExpenseTracker {
+    private final List<Expense> expenses = new ArrayList<>();
+
+    public void addExpense(Expense expense) {
+        expenses.add(expense);
+    }
+
+    public void printReport() {
+        int total = 0;
+        int mealTotal = 0;
+
+        for (Expense expense : expenses) {
+            total += expense.getAmount();
+            if (expense.isMeal()) {
+                mealTotal += expense.getAmount();
+            }
+        }
+
+        System.out.println("Meal Expense = " + mealTotal);
+        System.out.println("Total Expense = " + total);
+    }
+
+    public static void main(String[] args) {
+        ExpenseTracker tracker = new ExpenseTracker();
+
+        tracker.addExpense(new MealExpense("Dinner", 1000));
+        tracker.addExpense(new MealExpense("Breakfast", 2000));
+        tracker.addExpense(new OtherExpense("Car Rental", 3000));
+
+        tracker.printReport();
+    }
+}
